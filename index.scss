@@ -1,0 +1,115 @@
+@include keyframes(fadeIn) {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.darkbox {
+	&-overlay {
+		display: none;
+		position: fixed;
+		z-index: 100;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(#000, .7);
+		&.is-shown {
+			display: block;
+			animation: fadeIn .25s ease-out forwards;
+		}
+	}
+	&-wrap {
+		display: none;
+		position: absolute;
+		background: #fff;
+		transition: all .25s ease-out;
+		&:before {
+			content: '';
+			position: absolute;
+			z-index: 1;
+			top: -6px;
+			left: -6px;
+			right: -6px;
+			bottom: -6px;
+			background: #fff;
+		}
+		&.is-shown {
+			display: block;
+			opacity: 0;
+			animation: fadeIn .25s .25s ease-out forwards;
+		}
+	}
+	&-content {
+		position: relative;
+		z-index: 2;
+		img {
+			display: block;
+			width: 100%;
+		}
+	}
+	&-control {
+		position: absolute;
+		z-index: 3;
+		padding: 0;
+		border: 0;
+		&:focus {
+			outline: 0;
+		}
+		&-prev, &-next {
+			width: 33%;
+			top: 0;
+			bottom: 0;
+			background: rgba(#f00, .3);
+			opacity: 0;
+			transition: opacity .2s ease-out;
+			&:hover {
+				opacity: 1;
+			}
+		}
+		&-prev {
+			left: 0;
+		}
+		&-next {
+			right: 0;
+		}
+		&-close {
+			z-index: 4;
+			top: -15px;
+			right: -15px;
+			width: 30px;
+			height: 30px;
+			border: 2px solid #fff;
+			border-radius: 50%;
+			background: #000;
+			&:before, &:after {
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 18px;
+				height: 2px;
+				margin: -1px 0 0 -9px;
+				background: #fff;
+				transition: transform .15s ease-out;
+			}
+			&:before {
+				transform: rotateZ(45deg);
+			}
+			&:after {
+				transform: rotateZ(-45deg);
+			}
+			&:hover {
+				&:before {
+					transform: rotateZ(-45deg);
+				}
+				&:after {
+					transform: rotateZ(45deg);
+				}
+			}
+		}
+	}
+}
