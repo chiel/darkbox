@@ -10,12 +10,16 @@ Darkbox.types.gallery = function(opts){
 
 	var loadImage = function(index){
 		var img = new Image();
+
 		img.addEventListener('load', function(){
 			self.empty();
-			var size = self.fit(img.naturalWidth, img.naturalHeight);
-			img.width = size.width;
-			img.height = size.height;
-			self.content.appendChild(img);
+			self.fit(img.naturalWidth, img.naturalHeight, {
+				callback: function(width, height){
+					img.width = width;
+					img.height = height;
+					self.content.appendChild(img);
+				}
+			});
 		});
 		img.src = opts.items[index];
 	};
