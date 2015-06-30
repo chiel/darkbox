@@ -1,7 +1,11 @@
 'use strict';
 
+var debounce = require('mout/function/debounce');
 var deepMixIn = require('mout/object/deepMixIn');
 var forOwn = require('mout/object/forOwn');
+var isFunction = require('mout/lang/isFunction');
+
+var supportsTransition = require('./lib/supports')('transition');
 
 /**
  * Darkbox
@@ -149,6 +153,7 @@ Darkbox.prototype.renderControls = function(opts){
  * @param {Object} opts
  * @param {String} opts.mode - The scaling method to use
  * @param {Boolean} opts.maintainRatio - Respect the aspect ratio when scaling, defaults to true
+ * @param {Function} opts.callback - Callback to call when resizing has been completed
  *
  * @return {Object} - Object containing calculated width and height
  */
@@ -157,6 +162,7 @@ Darkbox.prototype.fit = function(width, height, opts){
 	if (!opts.mode) opts.mode = 'contain';
 	if (opts.maintainRatio !== false) opts.maintainRatio = true;
 
+	var self = this;
 	var iW = window.innerWidth;
 	var iH = window.innerHeight;
 
@@ -181,6 +187,17 @@ Darkbox.prototype.fit = function(width, height, opts){
 	width = Math.round(width);
 	height = Math.round(height);
 
+	if (supportsTransition && isFunction(opts.callback)){
+		var transitionEvent = debounce(function(e){
+			if (e.target !== self.wrap) return;
+
+			opts.callback(width, height);
+			self.wrap.removeEventListener('transitionend', transitionEvent);
+		}, 1);
+
+		self.wrap.addEventListener('transitionend', transitionEvent);
+	}
+
 	var props = {
 		width: width + 'px',
 		height: height + 'px',
@@ -188,15 +205,11 @@ Darkbox.prototype.fit = function(width, height, opts){
 		left: ((iW - width) / 2) + 'px'
 	};
 
-	var self = this;
 	forOwn(props, function(value, key){
 		self.wrap.style[key] = value;
 	});
 
-	return {
-		width: width,
-		height: height
-	};
+	return this;
 };
 
 /**
