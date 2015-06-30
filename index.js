@@ -30,9 +30,9 @@ Darkbox.defaults = {
 };
 
 /**
- *
+ * Build up all required elements
  */
-Darkbox.prototype.build = function(){
+Darkbox.prototype._build = function(){
 	if (this.overlay) return;
 
 	var overlay = document.createElement('div');
@@ -51,13 +51,13 @@ Darkbox.prototype.build = function(){
 	this.content = content;
 
 	this.fit(200, 200);
-	this.setEvents();
+	this._setEvents();
 };
 
 /**
- *
+ * Set required events
  */
-Darkbox.prototype.setEvents = function(){
+Darkbox.prototype._setEvents = function(){
 	var self = this;
 
 	self.overlay.addEventListener('click', function(e){
@@ -77,7 +77,7 @@ Darkbox.prototype.open = function(type, opts){
 		return console.error(new Error('Unknown content type `' + type + '`'));
 	}
 
-	this.build();
+	this._build();
 	document.body.style.overflow = 'hidden';
 	this.overlay.classList.add('darkbox-type-' + type);
 	this.overlay.classList.add('is-shown');
@@ -87,7 +87,7 @@ Darkbox.prototype.open = function(type, opts){
 };
 
 /**
- *
+ * Close this instance of darkbox
  */
 Darkbox.prototype.close = function(){
 	this.emit('close');
@@ -97,7 +97,7 @@ Darkbox.prototype.close = function(){
 };
 
 /**
- *
+ * Empty the content area of children
  */
 Darkbox.prototype.empty = function(){
 	while (this.content.firstChild){
@@ -106,7 +106,7 @@ Darkbox.prototype.empty = function(){
 };
 
 /**
- * Render controls
+ * Render controls and set associated events
  *
  * @return {Object} - The darkbox instance
  */
