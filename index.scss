@@ -1,3 +1,5 @@
+$easing: cubic-bezier(0, 1, .5, 1);
+
 @include keyframes(fadeIn) {
 	from {
 		opacity: 0;
@@ -20,7 +22,7 @@
 
 		&.is-shown {
 			display: block;
-			animation: fadeIn .25s ease-out forwards;
+			animation: fadeIn .4s $easing forwards;
 		}
 	}
 
@@ -31,7 +33,7 @@
 		left: 50%;
 		background: #fff;
 		transform: translate3d(-50%, -50%, 0);
-		transition: all .25s ease-out;
+		transition: all .4s $easing;
 
 		&:before {
 			content: '';
@@ -47,7 +49,7 @@
 		&.is-shown {
 			display: block;
 			opacity: 0;
-			animation: fadeIn .25s .25s ease-out forwards;
+			animation: fadeIn .4s .4s $easing forwards;
 		}
 	}
 
@@ -76,7 +78,7 @@
 			bottom: 0;
 			background: rgba(#000, .2);
 			opacity: 0;
-			transition: opacity .2s ease-out;
+			transition: opacity .4s $easing;
 
 			&:before {
 				content: '';
@@ -131,7 +133,7 @@
 				height: 2px;
 				margin: -1px 0 0 -9px;
 				background: #fff;
-				transition: transform .15s ease-out;
+				transition: transform .4s $easing;
 			}
 
 			&:before {
