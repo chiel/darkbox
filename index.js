@@ -191,27 +191,29 @@ Darkbox.prototype.fit = function(width, height, opts){
 	width = Math.round(width);
 	height = Math.round(height);
 
+	var dimensionsChanged = this.width !== width || this.height !== height;
+
 	if (supportsTransition && isFunction(opts.callback)){
-		var transitionEvent = debounce(function(e){
-			if (e.target !== self.wrap) return;
+		if (dimensionsChanged){
+			var transitionEvent = debounce(function(e){
+				if (e.target !== self.wrap) return;
 
+				opts.callback(width, height);
+				self.wrap.removeEventListener('transitionend', transitionEvent);
+			}, 1);
+
+			self.wrap.addEventListener('transitionend', transitionEvent);
+		} else {
 			opts.callback(width, height);
-			self.wrap.removeEventListener('transitionend', transitionEvent);
-		}, 1);
-
-		self.wrap.addEventListener('transitionend', transitionEvent);
+		}
 	}
 
-	var props = {
-		width: width + 'px',
-		height: height + 'px',
-		top: ((iH - height) / 2) + 'px',
-		left: ((iW - width) / 2) + 'px'
-	};
-
-	forOwn(props, function(value, key){
-		self.wrap.style[key] = value;
-	});
+	if (dimensionsChanged){
+		this.wrap.style.width = width + 'px';
+		this.wrap.style.height = height + 'px';
+		this.width = width;
+		this.height = height;
+	}
 
 	return this;
 };
