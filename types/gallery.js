@@ -1,6 +1,7 @@
 'use strict';
 
 var Darkbox = require('..');
+var loadImage = require('../lib/loadimage');
 
 Darkbox.types.gallery = function(opts){
 	var self = this;
@@ -8,10 +9,8 @@ Darkbox.types.gallery = function(opts){
 
 	var currentIndex = opts.index;
 
-	var loadImage = function(index){
-		var img = new Image();
-
-		img.addEventListener('load', function(){
+	var to = function(index){
+		loadImage(opts.items[index], function(img){
 			self.empty();
 			self.fit(img.naturalWidth, img.naturalHeight, {
 				callback: function(width, height){
@@ -21,17 +20,16 @@ Darkbox.types.gallery = function(opts){
 				}
 			});
 		});
-		img.src = opts.items[index];
 	};
 
 	var previous = function(){
 		if (currentIndex < 1) return;
-		loadImage(--currentIndex);
+		to(--currentIndex);
 	};
 
 	var next = function(){
 		if (currentIndex > opts.items.length - 2) return;
-		loadImage(++currentIndex);
+		to(++currentIndex);
 	};
 
 	var close = function(){
@@ -44,5 +42,6 @@ Darkbox.types.gallery = function(opts){
 	self.on('next', next);
 	self.on('close', close);
 
-	loadImage(opts.index);
+	self.empty();
+	to(opts.index);
 };
