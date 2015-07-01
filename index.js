@@ -87,6 +87,10 @@ Darkbox.prototype.open = function(type, opts){
 	this.overlay.classList.add('is-shown');
 	this.wrap.classList.add('is-shown');
 
+	// As random as this seems, this is needed in order to force a repaint,
+	// otherwise sometimes the transitionend from the fit method won't fire
+	this.wrap.getBoundingClientRect();
+
 	Darkbox.types[type].call(this, opts);
 };
 
