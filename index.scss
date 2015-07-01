@@ -56,9 +56,16 @@ $easing: cubic-bezier(0, 1, .5, 1);
 	&-content {
 		position: relative;
 		z-index: 2;
+		opacity: 0;
+		transition: opacity .4s $easing;
+
 		img {
 			display: block;
 			width: 100%;
+		}
+
+		&.is-loaded {
+			animation: fadeIn .4s $easing forwards;
 		}
 	}
 

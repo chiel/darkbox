@@ -17,6 +17,7 @@ Darkbox.types.gallery = function(opts){
 					img.width = width;
 					img.height = height;
 					self.content.appendChild(img);
+					self.content.classList.add('is-loaded');
 				}
 			});
 		});
