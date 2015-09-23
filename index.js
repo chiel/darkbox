@@ -101,6 +101,7 @@ Darkbox.prototype.close = function(){
 	this.emit('close');
 	this.overlay.classList.remove('is-shown');
 	this.wrap.classList.remove('is-shown');
+	this.content.innerHTML = '';
 	document.body.style.overflow = '';
 };
 
