@@ -126,7 +126,7 @@ Darkbox.prototype.renderControls = function(opts){
 	this.controls = {};
 
 	var self = this;
-	['prev', 'next', 'close'].forEach(function(type){
+	[ 'prev', 'next', 'close' ].forEach(function(type){
 		var btn = document.createElement('button');
 		btn.type = 'button';
 		btn.classList.add('darkbox-control');
@@ -204,7 +204,7 @@ Darkbox.prototype.fit = function(width, height, opts){
 			}, 1);
 
 			self.wrap.addEventListener('transitionend', transitionEvent);
-		} else {
+		} else{
 			opts.callback(width, height);
 		}
 	}
