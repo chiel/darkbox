@@ -12,8 +12,8 @@ var supportsTransition = require('./lib/supports')('transition');
  *
  * @param {Object} opts
  */
-var Darkbox = function(opts){
-	if (!(this instanceof Darkbox)){
+var Darkbox = function(opts) {
+	if (!(this instanceof Darkbox)) {
 		return new Darkbox(opts);
 	}
 
@@ -36,7 +36,7 @@ Darkbox.defaults = {
 /**
  * Build up all required elements
  */
-Darkbox.prototype._build = function(){
+Darkbox.prototype._build = function() {
 	if (this.overlay) return;
 
 	var overlay = document.createElement('div');
@@ -61,10 +61,10 @@ Darkbox.prototype._build = function(){
 /**
  * Set required events
  */
-Darkbox.prototype._setEvents = function(){
+Darkbox.prototype._setEvents = function() {
 	var self = this;
 
-	self.overlay.addEventListener('click', function(e){
+	self.overlay.addEventListener('click', function(e) {
 		if (e.target !== self.overlay) return;
 		self.close();
 	});
@@ -76,8 +76,8 @@ Darkbox.prototype._setEvents = function(){
  * @param {String} type - Type of content
  * @param {Object} opts - Options to pass to the type handler function
  */
-Darkbox.prototype.open = function(type, opts){
-	if (!Darkbox.types[type]){
+Darkbox.prototype.open = function(type, opts) {
+	if (!Darkbox.types[type]) {
 		return console.error(new Error('Unknown content type `' + type + '`'));
 	}
 
@@ -97,7 +97,7 @@ Darkbox.prototype.open = function(type, opts){
 /**
  * Close this instance of darkbox
  */
-Darkbox.prototype.close = function(){
+Darkbox.prototype.close = function() {
 	this.emit('close');
 	this.overlay.classList.remove('is-shown');
 	this.wrap.classList.remove('is-shown');
@@ -108,8 +108,8 @@ Darkbox.prototype.close = function(){
 /**
  * Empty the content area of children
  */
-Darkbox.prototype.empty = function(){
-	while (this.content.firstChild){
+Darkbox.prototype.empty = function() {
+	while (this.content.firstChild) {
 		this.content.removeChild(this.content.firstChild);
 	}
 };
@@ -119,14 +119,14 @@ Darkbox.prototype.empty = function(){
  *
  * @return {Object} - The darkbox instance
  */
-Darkbox.prototype.renderControls = function(opts){
+Darkbox.prototype.renderControls = function(opts) {
 	if (this.controls) return;
 	opts = opts || {};
 
 	this.controls = {};
 
 	var self = this;
-	[ 'prev', 'next', 'close' ].forEach(function(type){
+	[ 'prev', 'next', 'close' ].forEach(function(type) {
 		var btn = document.createElement('button');
 		btn.type = 'button';
 		btn.classList.add('darkbox-control');
@@ -135,15 +135,15 @@ Darkbox.prototype.renderControls = function(opts){
 		self.controls[type] = btn;
 	});
 
-	self.controls.prev.addEventListener('click', function(){
+	self.controls.prev.addEventListener('click', function() {
 		self.emit('previous');
 	});
 
-	self.controls.next.addEventListener('click', function(){
+	self.controls.next.addEventListener('click', function() {
 		self.emit('next');
 	});
 
-	self.controls.close.addEventListener('click', function(){
+	self.controls.close.addEventListener('click', function() {
 		self.close();
 	});
 
@@ -162,7 +162,7 @@ Darkbox.prototype.renderControls = function(opts){
  *
  * @return {Object} - Object containing calculated width and height
  */
-Darkbox.prototype.fit = function(width, height, opts){
+Darkbox.prototype.fit = function(width, height, opts) {
 	opts = opts || {};
 	if (!opts.mode) opts.mode = 'contain';
 	if (opts.maintainRatio !== false) opts.maintainRatio = true;
@@ -173,16 +173,16 @@ Darkbox.prototype.fit = function(width, height, opts){
 
 	// calculate max width & height based on mode
 	var maxWidth, maxHeight, scale;
-	if (opts.mode === 'contain'){
+	if (opts.mode === 'contain') {
 		maxWidth = iW - (this.opts.margin.x * 2);
 		maxHeight = iH - (this.opts.margin.y * 2);
 
-		if (width > maxWidth){
+		if (width > maxWidth) {
 			scale = maxWidth / width;
 			width = width * scale;
 			if (opts.maintainRatio) height = height * scale;
 		}
-		if (height > maxHeight){
+		if (height > maxHeight) {
 			scale = maxHeight / height;
 			height = height * scale;
 			if (opts.maintainRatio) width = width * scale;
@@ -194,9 +194,9 @@ Darkbox.prototype.fit = function(width, height, opts){
 
 	var dimensionsChanged = this.width !== width || this.height !== height;
 
-	if (supportsTransition && isFunction(opts.callback)){
-		if (dimensionsChanged){
-			var transitionEvent = debounce(function(e){
+	if (supportsTransition && isFunction(opts.callback)) {
+		if (dimensionsChanged) {
+			var transitionEvent = debounce(function(e) {
 				if (e.target !== self.wrap) return;
 
 				opts.callback(width, height);
@@ -204,12 +204,12 @@ Darkbox.prototype.fit = function(width, height, opts){
 			}, 1);
 
 			self.wrap.addEventListener('transitionend', transitionEvent);
-		} else{
+		} else {
 			opts.callback(width, height);
 		}
 	}
 
-	if (dimensionsChanged){
+	if (dimensionsChanged) {
 		this.wrap.style.width = width + 'px';
 		this.wrap.style.height = height + 'px';
 		this.width = width;
